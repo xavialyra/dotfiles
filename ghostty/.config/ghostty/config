@@ -1,0 +1,4 @@
+theme=light:dawnfox,dark:nordfox
+gtk-single-instance=true
+command=fish
+confirm-close-surface=false
