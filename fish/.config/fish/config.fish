@@ -13,6 +13,8 @@ if status is-interactive
 end
 
 starship init fish | source
+zoxide init --cmd cd fish | source
+
 if test -f ~/.local/state/quickshell/user/generated/terminal/sequences.txt
     cat ~/.local/state/quickshell/user/generated/terminal/sequences.txt
 end
