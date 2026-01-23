@@ -1,14 +1,23 @@
+
+config.source('colors.py')
+
 config.load_autoconfig(False) # ignore GUI settings
 
 # Config ######################################################################
-# c.editor.command = ['ghostty', '--class=ghostty.float', 'nvim', '{file}', '-c', 'normal {line}G{column0}l']
-#zc.editor.command = ['ghostty', '--class=ghostty.float', 'nvim', '+{line}', '{file}']
-# c.editor.command = ['ghostty', '--class=ghostty.float', 'nvim', '{file}', '-c', 'normal {line}G{column}|']
-#c.editor.command = ['ghostty', '--class=ghostty.float', '--command=nvim +{line} {file}']
 c.qt.environ = {'NODE_PATH': '/usr/lib/node_modules'}
-c.editor.command = ['ghostty', '--class=ghostty.float', '--command=nvim -c "normal {line}G{column}|" {file}']
+# c.editor.command = ['ghostty', '--class=ghostty.float', '--command=nvim -c "normal {line}G{column}|" {file}']
+c.editor.command = ['footclient', '-T', 'Floating_Term', '-o', 'colors.alpha=0.9', 'nvim', '{file}', '-c', 'normal {line}G{column0}l']
+
+fileChooser = ['footclient', '-T', 'Floating_Term', '-o', 'colors.alpha=0.9', 'yazi', '--chooser-file={}']
+c.fileselect.handler = "external"
+c.fileselect.folder.command = fileChooser
+c.fileselect.multiple_files.command = fileChooser
+c.fileselect.single_file.command = fileChooser
+
 c.url.start_pages = 'file:///dev/null'
 c.url.default_page= 'file:///dev/null'
+c.auto_save.session = True
+
 
 c.zoom.default = 100
 c.zoom.levels = ["25%", "33%", "50%", "67%", "75%", "90%", "100%", "125%", "133%", "150%", "175%", "200%", "250%", "300%"]
@@ -23,17 +32,44 @@ c.scrolling.smooth = True
 c.tabs.show = "never"
 
 c.downloads.location.directory = "~/Downloads"
+c.downloads.location.prompt = False
+c.downloads.location.suggestion = 'both'
+c.downloads.location.remember = False
+c.downloads.remove_finished = 3300
 c.downloads.position = "bottom"
 
-c.colors.statusbar.normal.bg = '#427b58'
-c.colors.statusbar.command.bg = '#427b58'
-c.colors.statusbar.insert.bg = '#b16286'
-c.colors.statusbar.normal.fg = '#eeeeee'
-c.colors.statusbar.command.fg = '#eeeeee'
-c.colors.hints.bg = '#427b58'
-c.colors.hints.match.fg = '#eeeeee'
+c.tabs.show = "always"
+c.tabs.position = "left"
+c.tabs.padding = {"bottom":0, "left":0, "right":0, "top":0}
+c.tabs.indicator.width = 0
+c.tabs.width = '10%'
+c.statusbar.show = "always"
+c.completion.height = '30%'
 
+c.keyhint.delay = 0
+c.hints.uppercase = False
+c.hints.chars = "asdfjkl;"
+
+# colors
+# c.colors.statusbar.normal.bg = '#427b58'
+# c.colors.statusbar.command.bg = '#427b58'
+# c.colors.statusbar.insert.bg = '#b16286'
+# c.colors.statusbar.normal.fg = '#eeeeee'
+# c.colors.statusbar.command.fg = '#eeeeee'
+# c.colors.hints.bg = '#427b58'
+# c.colors.hints.match.fg = '#eeeeee'
+
+
+# content
+c.content.fullscreen.window = True
+# c.content.autoplay = False
 c.content.blocking.enabled = True
+c.content.blocking.method = 'both'
+c.content.blocking.adblock.lists = [
+  "https://easylist.to/easylist/easylist.txt",
+  "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt",
+  "https://easylist.to/easylist/easyprivacy.txt",
+  "https://secure.fanboy.co.nz/fanboy-annoyance.txt",]
 
 # privacy
 # c.content.canvas_reading = False
@@ -57,6 +93,7 @@ config.bind('cs', 'config-source')
 
 config.bind('zi', 'zoom-in')
 config.bind('zo', 'zoom-out')
+config.bind('zz', 'zoom {}'.format(c.zoom.default))
 
 config.bind('si', 'hint images download')
 
@@ -69,31 +106,17 @@ config.bind('<Escape>', 'mode-leave ;; click-element id tampermonkey-decoy-click
 config.bind('<Escape>', 'click-element id tampermonkey-decoy-clicker', mode='normal')
 config.bind(';m', 'hint links spawn --userscript ~/.local/bin/url2mpv.sh {hint-url} --from-browser "chromium:~/.local/share/qutebrowser"')
 config.bind(',m', 'spawn --userscript ~/.local/bin/url2mpv.sh {url} --from-browser "chromium:~/.local/share/qutebrowser"')
-config.bind('wt', 'jseval -q var el = document.getElementById("__qutebrowser_translation_trigger"); el.dataset.params = JSON.stringify({translationService: "microsoft-translator", microsoftApiKey: "1R6kkdpwnj7XUPaikG5hd2XfxmW2AbmmUPdC1GVaQJAd3j6T8TyHJQQJ99BJACi0881XJ3w3AAAbACOGdotm", microsoftRegion: "japaneast"}); el.click();')
 
 
-WRAPPER_CLASS = '.text-region-wrapper'
-TOGGLE_ID = '__qutebrowser_region_trigger'
-EXTRACT_ID = '__qutebrowser_extract_trigger'
-TEMP_ID = '__temp_hint_target'
+config.bind('.', 'config-cycle tabs.show always never')
+config.bind(',', 'config-cycle tabs.width 20% 10%')
+config.bind('<Ctrl-Shift-j>', 'tab-move +')
+config.bind('<Ctrl-Shift-k>', 'tab-move -')
 
-START_MARKING = 'jseval -q document.getElementById("__qutebrowser_region_trigger");'
-HINT_ACTION = f"element.id='{TEMP_ID}'; document.getElementById('{EXTRACT_ID}').click()"
+config.bind('b', 'config-cycle statusbar.show always never')
+config.bind('tg', 'tab-focus 1')
+config.bind('tG', 'tab-focus -1')
+config.bind('I', 'config-cycle colors.webpage.darkmode.enabled false true')
 
-# 3. 复制结果 (在 Hint 结束后，使用 :jseval -f 读取结果并复制)
-COPY_RESULT = f"jseval -f qutebrowser.clipboard.setText(document.getElementById('{EXTRACT_ID}').dataset.result)"
-
-# 绑定主 Hint 流程 (启用标记 -> Hint -> 提取/清理/复制)
-config.bind(
-    ',th', 
-    f"click-element id __qutebrowser_region_trigger ;; hint text-regions",
-    mode='normal'
-)
-
-
-# 手动关闭的绑定
-config.bind(
-    ',tf', 
-    f"jseval -f document.getElementById('{TOGGLE_ID}').dataset.params = '{{\"forceState\": false}}'; document.getElementById('{TOGGLE_ID}').click()", 
-    mode='normal'
-)
+config.bind('cm', 'clear-messages')
+config.bind('ca', 'download-cancel')
