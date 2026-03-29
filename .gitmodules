@@ -1,0 +1,12 @@
+[submodule "tmux/.config/tmux/plugins/tmux-minimal-theme"]
+	path = tmux/.config/tmux/plugins/tmux-minimal-theme
+	url = https://github.com/binoymanoj/tmux-minimal-theme.git
+[submodule "tmux/.config/tmux/plugins/tmux-sensible"]
+	path = tmux/.config/tmux/plugins/tmux-sensible
+	url = https://github.com/tmux-plugins/tmux-sensible.git
+[submodule "tmux/.config/tmux/plugins/tmux/.config/tmux/plugins/tmux-which-key"]
+	path = tmux/.config/tmux/plugins/tmux/.config/tmux/plugins/tmux-which-key
+	url = https://github.com/alexwforsythe/tmux-which-key
+[submodule "tmux/.config/tmux/plugins/tmux-which-key"]
+	path = tmux/.config/tmux/plugins/tmux-which-key
+	url = https://github.com/xavialyra/tmux-which-key
